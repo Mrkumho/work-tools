@@ -7,7 +7,7 @@ using namespace std;
 int main(int argc, char** argv)
 {	
 	vector<string> pkts;
-	vector<int> keys = { 21000004 };
+	vector<int> keys = { 21000004,2001000};
 	string pkt;
 
 	map<int, string> mp;
@@ -34,27 +34,36 @@ int main(int argc, char** argv)
 	}
 	readFile.close();
 	
+
 	for (int i = 0; i < keys.size(); i++)
 	{	
-		int strkey = keys[i];
-		to_string(strkey);
+		stringstream sstream;
+		sstream << keys[i];
+		string strkey = sstream.str();
 
 		for (auto x : pkts)
 		{	
-			if (!mp.count(keys[i]) && x.find(strkey) != string::npos)
+			if (mp.find(keys[i]) == mp.end())
 			{
-				
+				cout << 11 << endl;
+				if(x.find(strkey) != string::npos)
+						mp[i] = x;
 			}
+			else if (mp.find(keys[i]) != mp.end()) break;
 		}
+		sstream.clear();
 	}
 
 	ofstream writeFile;
-	writeFile.open("pkts.txt");
+	ofstream resFile;
 
-	for(auto x : pkts)
-	writeFile << x << endl <<endl;
+	writeFile.open("pkts.txt");
+	resFile.open("res.txt");
+	for(auto x : pkts) writeFile << x << endl << endl;
+	for(auto y : mp) resFile << y.second << endl << endl;
 
 	writeFile.close();
+	resFile.close();
 
 	return 0;
 }
