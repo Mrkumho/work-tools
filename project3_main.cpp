@@ -10,28 +10,36 @@ int main(int argc, char** argv)
 	vector<string> pkts;
 	string pkt;
 	vector<string> keys = {
-		"51000005",
-		"51020005",
-		"513b0005",
-		"513c0005",
-		"51050005",
-		"51110005",
-		"51120005",
-		"513a0005",
-		"512d0005",
-		"512e0005",
-		"51300005",
-		"51310005",
-		"51320005",
-		"51330005",
-		"51340005",
-		"51360005",
-		"51370005",
-		"50000005",
-		"50010005",
-		"50020005",
-		"512a0005",
-		"51020005"
+		"51000005", //0
+		"51020005",	//1
+		"513b0005",	//2
+		"513c0005", //3
+		"51050005", //4
+		"51110005", //5
+		"51120005", //6
+		"513a0005", //7
+		"512d0005", //8 
+		"512e0005", //9
+		"51300005", //10
+		"51310005", //11
+		"51320005", //12
+		"51330005", //13
+		"51340005", //14
+		"51360005", //15
+		"51370005", //16
+		"51380005", //17
+		"51390005", //18
+		"51090005", //19
+		"510b0005", //20
+		"510c0005", //21
+		"513f0005", //22
+		"510d0005", //23
+		"51410005", //24
+		"51420005", //25
+		"510e0005", //26
+		"51430005", //27
+		"512a0005", //28
+		"51000005"  //29
 	};
 
 	string inputFile = argv[1];
@@ -59,22 +67,40 @@ int main(int argc, char** argv)
 				pkts.push_back(pkt);
 				pkt.clear();
 			}
-
 		}
 	}
 
-	
+	int keySize = keys.size();
 	//Save the necessary primitive in the map container.
-	for (int i = 0; i < keys.size(); i++)
+	for (int i = 0; i < keySize; i++)
 	{	
 		for (auto x : pkts)
 		{	
-			if (mp.find(i) == mp.end() && x.find(keys[i]) != string::npos) mp[i] = x;
-
+			if (mp.find(i) == mp.end() && x.find(keys[i]) != string::npos)
+			{	
+				//The loadsetting start primitive insert.
+				if (i == 0)
+				{
+					if (x.find("0100aaaa") != string::npos) mp[i] = x;
+				}
+				//The loadsetting end primitive insert.
+				else if (i == keySize - 1)
+				{
+					if (x.find("0101aaaa") != string::npos) mp[i] = x;
+				}
+				else
+				{
+					mp[i] = x;
+				}
+			}
 			if (mp.find(i) != mp.end()) break;
 		}
 	}
 
+	for (auto& x : mp)
+	{
+		x.second.substr(5,5);
+	}
 	//Print file declaration.
 	ofstream writeFile;
 	ofstream resFile;
@@ -87,7 +113,7 @@ int main(int argc, char** argv)
 	//Print out only the necessary primitive.
 	resFile.open("res.txt");
 	for(auto y : mp) resFile << y.second << endl << endl;
-
+	
 	//Close the file.
 	readFile.close();
 	writeFile.close();
