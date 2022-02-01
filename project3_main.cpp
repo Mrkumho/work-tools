@@ -2,45 +2,31 @@
 #include <bits/stdc++.h>
 #include <fstream>
 
+#define primitiveLen 8
 using namespace std;
 
 int main(int argc, char** argv)
 {	
-	
 	vector<string> pkts;
 	string pkt;
-	vector<string> keys = {
-		"51000005", //0
-		"51020005",	//1
-		"513b0005",	//2
-		"513c0005", //3
-		"51050005", //4
-		"51110005", //5
-		"51120005", //6
-		"513a0005", //7
-		"512d0005", //8 
-		"512e0005", //9
-		"51300005", //10
-		"51310005", //11
-		"51320005", //12
-		"51330005", //13
-		"51340005", //14
-		"51360005", //15
-		"51370005", //16
-		"51380005", //17
-		"51390005", //18
-		"51090005", //19
-		"510b0005", //20
-		"510c0005", //21
-		"513f0005", //22
-		"510d0005", //23
-		"51410005", //24
-		"51420005", //25
-		"510e0005", //26
-		"51430005", //27
-		"512a0005", //28
-		"51000005"  //29
-	};
+
+	//Save the notepad primitives.
+	vector<string> keys;
+
+	ifstream keysFile;
+	keysFile.open("prim/primitives.txt");
+
+	if (keysFile.is_open())
+	{
+		while (!keysFile.eof())
+		{
+			string tmp = "";
+			getline(keysFile, tmp);
+			if(tmp.size() == primitiveLen) keys.push_back(tmp);
+		}
+	}
+	
+	keysFile.close();
 
 	string inputFile = argv[1];
 
@@ -70,7 +56,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	int keySize = keys.size();
+	size_t keySize = keys.size();
 	//Save the necessary primitive in the map container.
 	for (int i = 0; i < keySize; i++)
 	{	
@@ -97,27 +83,49 @@ int main(int argc, char** argv)
 		}
 	}
 
-	for (auto& x : mp)
-	{
-		x.second.substr(5,5);
-	}
 	//Print file declaration.
 	ofstream writeFile;
 	ofstream resFile;
 
 	//Print out all the primitives.
 	writeFile.open("pkts.txt");
-	for (auto x : pkts) writeFile << x << endl << endl;
+	for (auto x : pkts) writeFile << x << endl;
 
 
 	//Print out only the necessary primitive.
 	resFile.open("res.txt");
-	for(auto y : mp) resFile << y.second << endl << endl;
+	for(auto y : mp) resFile << y.second << endl;
 	
 	//Close the file.
 	readFile.close();
 	writeFile.close();
 	resFile.close();
+
+	//system("mkdir Scenario");
+
+	//Print file declaration.
+	vector<string> prim;
+
+	//Change the output data.
+	for (auto x : mp)
+	{
+		prim.push_back("6305," + x.second.substr(x.second.find("abcd")));
+	}
+
+	ofstream writeFile1;
+	int i = 1;
+	for (auto x : prim)
+	{
+		string fileName1 = "test2_";
+
+		fileName1 += (to_string(i) + "_1C.csv");
+		writeFile1.open(fileName1);
+		writeFile1 << x;
+
+		writeFile1.close();
+
+		i++;
+	}
 
 	return 0;
 }
