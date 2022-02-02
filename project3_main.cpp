@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 	vector<string> pkts;
 	string pkt;
 
-	//Save the notepad primitives.
+	//Store the notepad primitives.
 	vector<string> keys;
 
 	ifstream keysFile;
@@ -84,24 +84,25 @@ int main(int argc, char** argv)
 	}
 
 	//Print file declaration.
-	ofstream writeFile;
-	ofstream resFile;
+	//ofstream writeFile;
+	//ofstream resFile;
 
 	//Print out all the primitives.
-	writeFile.open("pkts.txt");
-	for (auto x : pkts) writeFile << x << endl;
+	//writeFile.open("pkts.txt");
+	//for (auto x : pkts) writeFile << x << endl;
 
 
 	//Print out only the necessary primitive.
-	resFile.open("res.txt");
-	for(auto y : mp) resFile << y.second << endl;
+	//resFile.open("res.txt");
+	//for(auto y : mp) resFile << y.second << endl;
 	
 	//Close the file.
 	readFile.close();
-	writeFile.close();
-	resFile.close();
+	//writeFile.close();
+	//resFile.close();
 
-	//system("mkdir Scenario");
+	//Create scenario storage directory
+	system("mkdir Scenario");
 
 	//Print file declaration.
 	vector<string> prim;
@@ -126,6 +127,9 @@ int main(int argc, char** argv)
 
 		i++;
 	}
+
+	//Move scenario files.
+	system("move *.csv Scenario/");
 
 	return 0;
 }
